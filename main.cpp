@@ -49,13 +49,13 @@ void Display() {
     glLineWidth(3);
     glPointSize(3);
 
-    renderString(0, 0.9, "color change (C)");
+    renderString(0, 0.9, "color change (c)");
     if(isBlue)
         drawKvadrat(Kvadrat(0,0.9,0.8,0.1, Color(0,0,1,0)));
     else
         drawKvadrat(Kvadrat(0,0.9,0.8,0.1, Color(1,0,0,0)));
 
-    renderString(-0.9, 0, "alpha test");
+    renderString(-0.9, 0, "alpha test (a)");
     glAlphaFunc(GL_GREATER, 0.1);
     if (enableAlphaTest)
         glEnable(GL_ALPHA_TEST);
@@ -64,7 +64,7 @@ void Display() {
     if (enableAlphaTest)
         glDisable(GL_ALPHA_TEST);
 
-    renderString(0,0, "stencil test");
+    renderString(0,0, "stencil test (s)");
     glStencilFunc(GL_GREATER, 0, 0xff);
     glStencilOp(GL_ZERO, GL_KEEP, GL_KEEP);
     if (enableStencilTest)
@@ -74,7 +74,7 @@ void Display() {
     if (enableStencilTest)
         glDisable(GL_STENCIL_TEST);
 
-    renderString(-0.9, 0.9, "depth test");
+    renderString(-0.9, 0.9, "depth test (d)");
     glDepthFunc(GL_NEVER);
     if (enableDepthTest)
         glEnable(GL_DEPTH_TEST);
