@@ -11,6 +11,7 @@ static bool isBlue = false;
 static bool enableAlphaTest = false;
 static bool enableStencilTest = false;
 static bool enableDepthTest = false;
+static bool enableLogicalOp = false;
 
 void renderString(double x, double y, std::string string){
     double dx = x;
@@ -69,7 +70,12 @@ void init(){
 void Display() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
-    glEnable(GL_BLEND);
+    if(enableLogicalOp){
+        glEnable(GL_COLOR_LOGIC_OP);
+        glLogicOp(GL_COPY_INVERTED);
+    } else {
+        glDisable(GL_COLOR_LOGIC_OP);
+    }
 
     {
         renderString(0, 0.9, "color change (c)");
@@ -148,6 +154,10 @@ void ListenKeyboard(unsigned char key, int, int){
     case 'd':
         enableDepthTest = !enableDepthTest;
         std::cout << "depth test: " << enableDepthTest << std::endl;
+        break;
+    case 'l':
+        enableLogicalOp = !enableLogicalOp;
+        std::cout << "logical op: " << enableLogicalOp<< std::endl;
         break;
     }
 }
