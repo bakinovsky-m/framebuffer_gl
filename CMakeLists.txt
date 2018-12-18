@@ -1,5 +1,9 @@
 project(frame_buffer C CXX)
 
+find_package(OpenGL REQUIRED)
+find_package(GLUT REQUIRED)
+find_package(GLU REQUIRED)
+
 set(src
     main.cpp
 )
