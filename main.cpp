@@ -6,6 +6,7 @@
 static int WINDOW_HEIGHT = 500;
 static int WINDOW_WIDTH = 500;
 
+static bool manualSwapping = false;
 static bool isBlue = false;
 static bool enableAlphaTest = false;
 static bool enableStencilTest = false;
@@ -83,13 +84,21 @@ void Display() {
         glDisable(GL_DEPTH_TEST);
 
     glutPostRedisplay();
+    if(!manualSwapping)
+        glutSwapBuffers();
 }
 
 void ListenKeyboard(unsigned char key, int, int){
     switch(key){
+    case 'm':
+        std::cout << "manualSwapping: " << manualSwapping << std::endl;
+        manualSwapping = !manualSwapping;
+        break;
     case ' ':
-        std::cout << "swapping buffers" << std::endl;
-        glutSwapBuffers();
+        if (manualSwapping){
+            std::cout << "swapping buffers" << std::endl;
+            glutSwapBuffers();
+        }
         break;
     case 'c':
         std::cout << "switching color" << std::endl;
