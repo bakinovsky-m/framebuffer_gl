@@ -26,7 +26,7 @@ void renderString(double x, double y, std::string string){
     }
 }
 
-void drawRectanle(const Rectangle kv) {
+void drawRectangle(const Rectangle kv) {
     glColor4d(kv.color.r, kv.color.g, kv.color.b, kv.color.a);
     glBegin(GL_QUADS);
     glVertex3d(kv.tl_x, kv.tl_y, kv.depth);
@@ -80,9 +80,9 @@ void Display() {
     {
         renderString(0, 0.9, "color change (c)");
         if(isBlue)
-            drawRectanle(Rectangle(0,0.9,0.8,0.1, Color(0,0,1,0)));
+            drawRectangle(Rectangle(0,0.9,0.8,0.1, Color(0,0,1,0)));
         else
-            drawRectanle(Rectangle(0,0.9,0.8,0.1, Color(1,0,0,0)));
+            drawRectangle(Rectangle(0,0.9,0.8,0.1, Color(1,0,0,0)));
     }
 
     { // альфа (это четвёртый цвет в палитре RGBA)
@@ -91,8 +91,8 @@ void Display() {
         if (enableAlphaTest)
             glEnable(GL_ALPHA_TEST);
         // в конструкторе цвета менятся чётвёртая компонента - это альфа и есть
-        drawRectanle(Rectangle{-0.9, 0, -0.3, -0.5, Color{0,1,0,0}});
-        drawRectanle(Rectangle{-0.5, -.4, -0.1, -0.8, Color{0.7,1,0,1}});
+        drawRectangle(Rectangle{-0.9, 0, -0.3, -0.5, 0, Color{0,1,0,0}});
+        drawRectangle(Rectangle{-0.5, -.4, -0.1, -0.8, Color{0.7,1,0,1}});
         if (enableAlphaTest)
             glDisable(GL_ALPHA_TEST);
     }
@@ -103,7 +103,7 @@ void Display() {
         if (enableStencilTest)
             glEnable(GL_STENCIL_TEST);
         // tak tozhe mozhno!
-        drawRectanle(Rectangle{0,0,0.8,-0.8, 0, Color{0.3, 0.3, 0, 0.3}});
+        drawRectangle(Rectangle{0,0,0.8,-0.8, 0, Color{0.3, 0.3, 0, 0.3}});
         if (enableStencilTest)
             glDisable(GL_STENCIL_TEST);
     }
@@ -113,12 +113,12 @@ void Display() {
         glEnable(GL_DEPTH_TEST);
         if (enableDepthTest)
             // квадрат вне разрешённой глубины
-            drawRectanle(Rectangle{-0.55, 0.55, -0.1, 0.1, 1, Color{0.5, 0.5, 0, 0.3}});
+            drawRectangle(Rectangle{-0.55, 0.55, -0.1, 0.1, 1, Color{0.5, 0.5, 0, 0.3}});
         else {
             // квадрат внутри разрешённой глубины
-            drawRectanle(Rectangle{-0.55, 0.55, -0.1, 0.1, 0.9, Color{0.5, 0.5, 0.3}});
+            drawRectangle(Rectangle{-0.55, 0.55, -0.1, 0.1, 0.9, Color{0.5, 0.5, 0.3}});
         }
-        drawRectanle(Rectangle{-0.9, 0.9, -0.5, 0.5, 0, Color{1, 0.5, 0, 0.4}});
+        drawRectangle(Rectangle{-0.9, 0.9, -0.5, 0.5, 0, Color{1, 0.5, 0, 0.4}});
         glDisable(GL_DEPTH_TEST);
     }
 
