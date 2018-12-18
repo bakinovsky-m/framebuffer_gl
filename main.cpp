@@ -37,51 +37,82 @@ void drawKvadrat(const Kvadrat kv) {
 
 void init(){
     glClearColor(1, 1, 1, 1);
-    glClearDepth(0);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glClearStencil(0);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+
+    glLineWidth(3);
+    glPointSize(3);
+
+    { // трафарет (stencil)
+        // подготовка трафарета (треугольный полигон)
+        glEnable(GL_STENCIL_TEST);
+        glColorMask(GL_FALSE, GL_FALSE,GL_FALSE,GL_FALSE);
+        glStencilMask(0xff);
+        glStencilFunc(GL_NEVER, 1, 0xff);
+        glStencilOp(GL_REPLACE, GL_REPLACE, GL_REPLACE);
+        { // рисуем полигон, который будет запрещённой для отрисовки областью
+            glBegin(GL_POLYGON);
+            glVertex2d(0,0);
+            glVertex2d(0.5, -0.5);
+            glVertex2d(0, -.5);
+            glEnd();
+        }
+        glStencilMask(0x0);
+        glColorMask(GL_TRUE,GL_TRUE,GL_TRUE,GL_TRUE);
+        glDisable(GL_STENCIL_TEST);
+    }
 
     glutPostRedisplay();
     glutSwapBuffers();
 }
 
 void Display() {
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
-    glLineWidth(3);
-    glPointSize(3);
+    {
+        renderString(0, 0.9, "color change (c)");
+        if(isBlue)
+            drawKvadrat(Kvadrat(0,0.9,0.8,0.1, Color(0,0,1,0)));
+        else
+            drawKvadrat(Kvadrat(0,0.9,0.8,0.1, Color(1,0,0,0)));
+    }
 
-    renderString(0, 0.9, "color change (c)");
-    if(isBlue)
-        drawKvadrat(Kvadrat(0,0.9,0.8,0.1, Color(0,0,1,0)));
-    else
-        drawKvadrat(Kvadrat(0,0.9,0.8,0.1, Color(1,0,0,0)));
+    { // альфа (это четвёртый цвет в палитре RGBA)
+        renderString(-0.9, 0, "alpha test (a)");
+        glAlphaFunc(GL_GREATER, 0.1);
+        if (enableAlphaTest)
+            glEnable(GL_ALPHA_TEST);
+        // в конструкторе цвета менятся чётвёртая компонента - это альфа и есть
+        drawKvadrat(Kvadrat{-0.9, 0, -0.5, -0.4, Color{0,1,0,0}});
+        drawKvadrat(Kvadrat{-0.5, -.4, -0.1, -0.8, Color{0.7,1,0,1}});
+        if (enableAlphaTest)
+            glDisable(GL_ALPHA_TEST);
+    }
 
-    renderString(-0.9, 0, "alpha test (a)");
-    glAlphaFunc(GL_GREATER, 0.1);
-    if (enableAlphaTest)
-        glEnable(GL_ALPHA_TEST);
-    // prikolniy constructor, zaceni!
-    drawKvadrat({-0.9, 0, -0.1, -0.8, {0,1,0,0}});
-    if (enableAlphaTest)
-        glDisable(GL_ALPHA_TEST);
+    { // трафарет
+        renderString(0,0, "stencil test (s)");
+        glStencilFunc(GL_NOTEQUAL, 0x1, 0x1);
+        if (enableStencilTest)
+            glEnable(GL_STENCIL_TEST);
+        // tak tozhe mozhno!
+        drawKvadrat(Kvadrat{0,0,0.8,-0.8, 0, Color{0.3, 0.3, 0, 0.3}});
+        if (enableStencilTest)
+            glDisable(GL_STENCIL_TEST);
+    }
 
-    renderString(0,0, "stencil test (s)");
-    glStencilFunc(GL_GREATER, 0, 0xff);
-    glStencilOp(GL_ZERO, GL_KEEP, GL_KEEP);
-    if (enableStencilTest)
-        glEnable(GL_STENCIL_TEST);
-    // tak tozhe mozhno!
-    drawKvadrat(Kvadrat{0,0,0.8,-0.8, 0, Color{0.3, 0.3,0}});
-    if (enableStencilTest)
-        glDisable(GL_STENCIL_TEST);
-
-    renderString(-0.9, 0.9, "depth test (d)");
-    glDepthFunc(GL_NEVER);
-    if (enableDepthTest)
+    { // глубина
+        renderString(-0.9, 0.9, "depth test (d)");
         glEnable(GL_DEPTH_TEST);
-    drawKvadrat(Kvadrat{-0.9, 0.9, -0.1, 0.1, 0, Color{1, 0.5, 0}});
-    if (enableDepthTest)
+        if (enableDepthTest)
+            // квадрат вне разрешённой глубины
+            drawKvadrat(Kvadrat{-0.55, 0.55, -0.1, 0.1, 1, Color{0.5, 0.5, 0}});
+        else {
+            // квадрат внутри разрешённой глубины
+            drawKvadrat(Kvadrat{-0.55, 0.55, -0.1, 0.1, 0.9, Color{0.5, 0.5, 0}});
+        }
+        drawKvadrat(Kvadrat{-0.9, 0.9, -0.5, 0.5, 0, Color{1, 0.5, 0}});
         glDisable(GL_DEPTH_TEST);
+    }
 
     glutPostRedisplay();
     if(!manualSwapping)
