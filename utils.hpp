@@ -11,8 +11,8 @@ struct Color{
     double a;
 };
 
-struct Kvadrat{
-    Kvadrat(const double tl_x_, const double tl_y_, const double br_x_, const double br_y_) :
+struct Rectangle{
+    Rectangle(const double tl_x_, const double tl_y_, const double br_x_, const double br_y_) :
         tl_x(tl_x_),
         tl_y(tl_y_),
         br_x(br_x_),
@@ -20,7 +20,7 @@ struct Kvadrat{
         depth(0),
         color{0,0,0,0}
     {}
-    Kvadrat(const double tl_x_, const double tl_y_, const double br_x_, const double br_y_, const Color color_) :
+    Rectangle(const double tl_x_, const double tl_y_, const double br_x_, const double br_y_, const Color color_) :
         tl_x(tl_x_),
         tl_y(tl_y_),
         br_x(br_x_),
@@ -28,7 +28,7 @@ struct Kvadrat{
         depth(0),
         color(color_)
     {}
-    Kvadrat(const double tl_x_, const double tl_y_, const double br_x_, const double br_y_, const double depth_, const Color color_) :
+    Rectangle(const double tl_x_, const double tl_y_, const double br_x_, const double br_y_, const double depth_, const Color color_) :
         tl_x(tl_x_),
         tl_y(tl_y_),
         br_x(br_x_),
