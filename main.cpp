@@ -27,6 +27,8 @@ void renderString(double x, double y, std::string string){
 }
 
 void drawRectangle(const Rectangle kv) {
+    double cur_colors[4] = {0,0,0,0};
+    glGetDoublev(GL_CURRENT_COLOR, cur_colors);
     glColor4d(kv.color.r, kv.color.g, kv.color.b, kv.color.a);
     glBegin(GL_QUADS);
     glVertex3d(kv.tl_x, kv.tl_y, kv.depth);
@@ -34,6 +36,7 @@ void drawRectangle(const Rectangle kv) {
     glVertex3d(kv.br_x, kv.br_y, kv.depth);
     glVertex3d(kv.tl_x, kv.br_y, kv.depth);
     glEnd();
+    glColor3dv(cur_colors);
 }
 
 void init(){
