@@ -105,16 +105,16 @@ void ListenKeyboard(unsigned char key, int, int){
         isBlue = !isBlue;
         break;
     case 'a':
-        std::cout << "alpha test" << std::endl;
         enableAlphaTest = !enableAlphaTest;
+        std::cout << "alpha test: " << enableAlphaTest << std::endl;
         break;
     case 's':
-        std::cout << "stencil test" << std::endl;
         enableStencilTest = !enableStencilTest;
+        std::cout << "stencil test: " << enableStencilTest << std::endl;
         break;
     case 'd':
-        std::cout << "depth test" << std::endl;
         enableDepthTest = !enableDepthTest;
+        std::cout << "depth test: " << enableDepthTest << std::endl;
         break;
     }
 }
